@@ -8,6 +8,8 @@ const Player = styled.div`
   height:4vw;
   border-radius:20px;
   position:absolute;
+  background-color:black;
+  z-index:2;
 `;
 
 export default Player;
