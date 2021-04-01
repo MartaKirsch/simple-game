@@ -1,8 +1,10 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import Wrapper from 'components/Board/Wrapper';
 import Field from 'components/Board/Field';
 import Player from 'components/Board/Player';
+import Context from 'components/Context';
 import gsap from 'gsap';
+import { getRoute } from 'utils/getRoute.js';
 
 const Board = () => {
 
@@ -11,10 +13,13 @@ const Board = () => {
   const [currentField, setCurrentField] = useState(0);
   const [isMoving, setIsMoving] = useState(false);
 
-  const movePlayer = (x,y,duration=0) => {
+  const { p } = useContext(Context);
+
+  const movePlayer = async (x,y,duration=0) => {
     const player = playerRef.current;
-    gsap.to(player, {x:x,y:y,duration:duration,onComplete: ()=>{
-      setIsMoving(false);
+    await gsap.to(player, {x:x,y:y,duration:duration,onComplete: ()=>{
+
+      return true;
     }
     });
   };
@@ -36,14 +41,27 @@ const Board = () => {
     return [difference+field.offsetLeft,difference+field.offsetTop]
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     if(!isMoving)
     {
       setIsMoving(true);
       const num = e.target.dataset.num;
-      const [x,y] = getCenterOfField(num);
-      movePlayer(x,y,.5);
-      setCurrentField(num);
+
+      const route = getRoute(currentField,num,p);
+      //console.log(route);
+
+      for (const field of route)  {
+        //console.log(field);
+        const [x,y] = getCenterOfField(field);
+        const end = await movePlayer(x,y,.5);
+
+        if(field===route[route.length-1])
+        {
+          setIsMoving(false);
+        }
+        setCurrentField(field);
+      };
+
     }
   };
 
