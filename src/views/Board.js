@@ -13,7 +13,7 @@ const Board = () => {
   const [currentField, setCurrentField] = useState(0);
   const [isMoving, setIsMoving] = useState(false);
 
-  const { p } = useContext(Context);
+  const { p, n } = useContext(Context);
 
   const movePlayer = async (x,y,duration=0) => {
     const player = playerRef.current;
@@ -25,10 +25,7 @@ const Board = () => {
   };
 
   const getCenterOfField = (num) => {
-    if(num<0||num>8)
-    {
-      return;
-    }
+
     const fields = boardRef.current.querySelectorAll('.field');
     const player = playerRef.current;
     const field = fields[num];
@@ -69,18 +66,18 @@ const Board = () => {
     //position the player
     const [x,y] = getCenterOfField(currentField);
     movePlayer(x,y);
-  },[]);
+  },[n]);
 
   //create fields
   let fields=[];
-  for(let i=0;i<9;i++)
+  for(let i=0;i<n*n;i++)
   {
-    fields.push(<Field key={i} data-num={i} id={`field_${i}`} className="field" onClick={handleClick}></Field>)
+    fields.push(<Field key={i} data-num={i} id={`field_${i}`} className="field" onClick={handleClick} n={n}></Field>)
   }
 
   return(
-    <Wrapper ref={boardRef}>
-      <Player ref={playerRef}/>
+    <Wrapper ref={boardRef} n={n}>
+      <Player ref={playerRef} n={n}/>
       {fields}
     </Wrapper>
   )

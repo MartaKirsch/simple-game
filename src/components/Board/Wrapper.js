@@ -5,8 +5,8 @@ const Wrapper = styled.div`
   align-items:space-between;
   justify-content:space-between;
   flex-wrap:wrap;
-  width:30vw;
-  height:30vw;
+  width:${(props)=>(`${30+(props.n-3)*1}`)}vw;
+  height:${(props)=>(`${30+(props.n-3)*1}`)}vw;
   margin:6vw 0 0;
   position:relative;
 `;

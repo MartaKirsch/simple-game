@@ -4,8 +4,8 @@ const Field = styled.div`
   display:flex;
   align-items:center;
   justify-content:center;
-  width:9vw;
-  height:9vw;
+  width:${(props)=>(`${(30/props.n)-1+(props.n-3)*0.25}`)}vw;
+  height:${(props)=>(`${(30/props.n)-1+(props.n-3)*0.25}`)}vw;
 
   border-radius:20px;
   background-color:var(--yellow);
